@@ -2,7 +2,7 @@
   "apps": [
     {
   
-     "name": "app1",
+     "name": "app",
   
      "script": "bin/www",
   
@@ -10,11 +10,11 @@
   
      "log_file": "logs/app1.log",
   
-     "error_file": "logs/app1-err.log",
+     "error_file": "logs/app-err.log",
   
-     "out_file": "logs/app1-out.log",
+     "out_file": "logs/app-out.log",
   
-     "pid_file": "pids/app1.pid",
+     "pid_file": "pids/app.pid",
   
      "instances": 1,
   
