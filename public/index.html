@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Log界面</title>
+</head>
+<link href="stylesheets/style.css"  type="text/css" rel="stylesheet" >
+<script src="scripts/angular/angular.min.js"></script>
+<script type="text/javascript">
+  let mod = angular.module('app',[]);
+  let checkTimer = null;
+  
+  mod.controller('main',function($scope,$interval,$http){
+    checkTimer = null
+    isStart = false
+    // $scope.log = [
+		// 		{name: 'AAAAAAAAAAAAAAA'},
+		// 		{name: 'BBBBBBBBBBBBBBBBBBB'},
+		// 		{name: 'CCCCCCCCCCC',},
+		// 		{name: 'DDDDDDDDDDDDDDDDDDDDDDDDD'}
+		// 	];
+
+    function getLog(){
+      console.log('getLog..........');
+      $http.get('https://tt.api.coomaan.com/coomaan/iflyos/interceptor/pre/obtain').then((res) =>{
+        $scope.log = res.data
+      },(error)=>{
+        alert('网络错误')
+      })
+    }
+
+    $scope.clear = function(){
+      console.log('clear..........')
+      $http.get("https://tt.api.coomaan.com/coomaan/iflyos/interceptor/pre/restart").then((res)=>{
+        $scope.log = []
+      },(error)=>{
+        alert('网络错误')
+      })
+    }
+
+    $scope.start = function(){
+      console.log('start..........')
+      if(!isStart){
+        checkTimer = $interval(getLog,1000)
+        isStart = true
+      }else{
+        alert('已经开始')
+      }
+    }
+
+    $scope.$on("$destroy", function(){
+      if(checkTimer != null){
+        $interval.cancel(checkTimer);
+        checkTimer = null
+      }
+    });
+  })
+
+  
+</script>
+<body class="body" ng-controller="main">
+  <button ng-click="start()">开始</button>
+  <button ng-click="clear()">清空</button>
+  <ul ng-repeat="text in log">
+      <a class="p">{{text.time}}&nbsp&nbsp&nbsp&nbsp{{text.log}}</a>
+  </ul>
+</body>
+</html>

@@ -19,11 +19,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/scripts', express.static('node_modules/'));
 
 //配置请求
-app.get('/', function(req, res){
-  res.send('hello world');
-});
+// app.get('/', express.static('web/src/'));
 app.get('/api/*', api.get);
 app.post('/api/*', api.post);
 
